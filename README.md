@@ -22,3 +22,14 @@ El módulo desarrollado implementa un controlador I2C con soporte para operació
 | CLK	        | Aporte	    | Reloj del sistema.                |
 | VDD	        | Fuerza	    | Alimentación positiva.            |
 | Tierra	    | Fuerza	    | Conexión a tierra.                |
+## Cobertura de la especificación
+- El diseño implementado cubre las siguientes funcionalidades:
+- Operación básica en modo Maestro para escritura.
+- Generación de condiciones de inicio (Start) y parada (Stop).
+- Transmisión de datos hacia el periférico.
+- Gestión de señales ACK/NACK provenientes del periférico.
+## Elementos pendientes por implementar
+- Soporte para múltiples periféricos operando en simultáneo.
+- Mecanismo de gestión mediante interrupciones.
+## Diagramas de tiempo
+![image](https://github.com/user-attachments/assets/8a008205-6fdc-42e2-93a9-01f41d6d7a00)
