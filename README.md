@@ -3,6 +3,16 @@ Proyecto I2C: Configuración y elementos del módulo I2C en un procesador RISC-V
 # Proyecto de módulo de escritura I2C
 ## Objetivo
 El módulo desarrollado implementa un controlador I2C con soporte para operación en modo maestro y esclavo, enfocado en realizar operaciones de escritura. Este controlador genera las señales requeridas para la transmisión de datos hacia un periférico conectado mediante el bus I2C, incluyendo el manejo de las condiciones de inicio, parada y control de respuestas 
+## Configuración
+- Frecuencia de operación: 100 kHz.
+- Modo de operación: Maestro/Esclavo.
+- Direcciones soportadas: 7 bits.
+### Función
+- Generación de condiciones Start/Stop.
+- Transmisión de datos al periférico.
+- Manejo de señales ACK/NACK.
+- Generación de interrupciones al completar la escritura.
+- Configuración de prescaler para control del reloj.
 ## Especificaciones
 ### Especificaciones implementadas
 - El diseño implementado cubre las siguientes funcionalidades:
@@ -17,8 +27,6 @@ El módulo desarrollado implementa un controlador I2C con soporte para operació
   - Generación de condiciones Start/Stop.
   - Transmisión de datos al periférico.
   - Manejo de señales ACK/NACK.
-  - Generación de interrupciones al completar la escritura.
-  - Configuración de preescalador para control del reloj.
 ## Configuración de pines
 | Alfiler     | Dirección   | Descripción           |
 | ----------- | ----------- |---------------------- |
