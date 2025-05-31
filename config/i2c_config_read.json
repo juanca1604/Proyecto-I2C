@@ -1,0 +1,52 @@
+{
+  "module": {
+    "name": "I2C_Controller_Read",
+    "version": "1.0.0",
+    "summary": "I2C controller focused on read operations in both Master and Slave configurations, with robust error management."
+  },
+  "configuration": {
+    "modes": {
+      "operation_modes": ["Master", "Slave"],
+      "addressing_support": ["7-bit", "10-bit"]
+    },
+    "clock_speeds": {
+      "standard": "100 kHz",
+      "fast": "400 kHz",
+      "high_speed": "3.4 MHz"
+    },
+    "functionalities": {
+      "key_features": [
+        "Generates Start and Stop signals",
+        "Reads data from slave devices",
+        "Manages ACK/NACK responses",
+        "Supports clock stretching",
+        "Interrupts on data ready events",
+        "Clock speed adjustable via prescaler",
+        "Arbitration for multiple masters",
+        "Handles timeout and bus collision errors"
+      ],
+      "interfaces": [
+        {
+          "interface": "AMBA APB",
+          "description": "Enables integration via Advanced Peripheral Bus."
+        },
+        {
+          "interface": "Native I2C",
+          "description": "Direct line access to I2C (SDA, SCL)."
+        }
+      ]
+    },
+    "registers": {
+      "bitrate": "I2C_BITRATE - Sets the communication speed on the I2C bus.",
+      "control": "I2C_CTRL - Used to execute bus commands such as start, stop, read, and write.",
+      "status": "I2C_STATUS - Reflects current operation status and error codes.",
+      "data_input": "I2C_DATA_IN - Captures incoming data from I2C peripherals.",
+      "device_address": "I2C_ADDR - Sets the target peripheral’s address."
+    },
+    "error_management": {
+      "timeout": "Flags when a peripheral does not respond in time.",
+      "collision": "Detects simultaneous master access attempts.",
+      "missing_ack": "Handles the absence of acknowledgment signals from devices."
+    }
+  }
+}

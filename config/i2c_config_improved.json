@@ -1,0 +1,52 @@
+{
+  "module": {
+    "name": "I2C_Controller_Full_Featured",
+    "version": "1.0.0",
+    "summary": "Robust I2C controller with Master/Slave functionality, multiple addressing modes, and frequency configurations."
+  },
+  "details": {
+    "modes": {
+      "operation": ["Master", "Slave"],
+      "addressing": ["7-bit", "10-bit"]
+    },
+    "frequencies": {
+      "standard": "100 kHz",
+      "fast": "400 kHz",
+      "high_speed": "3.4 MHz"
+    },
+    "capabilities": {
+      "core_features": [
+        "Supports start and stop condition signaling",
+        "Automatic ACK/NACK response and monitoring",
+        "Enables clock stretching",
+        "Interrupts for data events and transmission completion",
+        "Adjustable clock via prescaler",
+        "Handles multi-master scenarios with arbitration",
+        "Detects and reports bus conflicts"
+      ],
+      "interfaces": [
+        {
+          "interface_type": "AMBA APB",
+          "info": "Facilitates integration via Advanced Peripheral Bus."
+        },
+        {
+          "interface_type": "Native I2C",
+          "info": "Connects directly to I2C lines (SDA/SCL)."
+        }
+      ]
+    },
+    "registers": {
+      "bitrate": "I2C_BITRATE - Defines communication speed.",
+      "control": "I2C_CTRL - Manages operations like start, stop, read, and write.",
+      "status": "I2C_STATUS - Shows state and error flags.",
+      "tx_data": "I2C_DATA_OUT - Stores outgoing data bytes.",
+      "rx_data": "I2C_DATA_IN - Receives data from the I2C slave.",
+      "address": "I2C_ADDR - Contains target device address."
+    },
+    "fault_management": {
+      "timeout": "Detects unresponsive devices after a defined wait time.",
+      "collision": "Signals if multiple masters contend for bus control.",
+      "nack_response": "Handles absent ACKs from slave devices."
+    }
+  }
+}
