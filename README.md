@@ -30,7 +30,7 @@ El módulo desarrollado implementa un controlador I2C con soporte para operació
 | Tierra	    | Fuerza	    | Conexión a tierra.                |
 
 ## Diagramas de tiempo
-![image](https://github.com/user-attachments/assets/8a008205-6fdc-42e2-93a9-01f41d6d7a00)
+![Imagen de WhatsApp 2025-05-30 a las 21 11 34_50f9b603](https://github.com/user-attachments/assets/4f54513b-4149-4059-821e-b0a11729304d)
 El diagrama de tiempo corresponde a una simulación realizada con el banco de pruebas del módulo I2C durante una operación de escritura. En esta simulación se observa el comportamiento de las señales involucradas en la transferencia de datos desde el controlador I2C hacia un periférico conectado al bus. La secuencia inicia con la señal addr[6:0], que especifica la dirección del dispositivo esclavo al que el maestro intenta acceder; en este caso, la dirección configurada es 0x55. La señal de reloj del sistema (clk) permanece activa durante toda la operación, sincronizando las transiciones del resto de señales. Asimismo, la señal enable se encuentra habilitada, indicando que el módulo está operativo.
 
 En la etapa de configuración, el registro i2c_bitrate[31:0] define la frecuencia de operación del bus I2C. El valor establecido, 0x0007A120, corresponde a una frecuencia cercana a los 100 kHz, en cumplimiento con los parámetros estándar del protocolo. Los registros i2c_ctrl_reg[7:0] e i2c_ctrl_wire[7:0] gestionan acciones clave como el inicio de la comunicación y las condiciones de parada. Durante la simulación, estos registros varían entre los valores 0x50 y 0x48, lo que refleja instrucciones específicas que controlan el flujo de la escritura.
