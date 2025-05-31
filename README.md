@@ -105,9 +105,12 @@ Si la operación es de lectura (**R/W = 1**), el maestro pasa al estado **READ**
 
 ## Sintesis I2C
 ![image](https://github.com/user-attachments/assets/7451a8e9-6cd0-458e-82e8-745b79852390)
+
 La anterior imagen corresponde a el informe de síntesis que muestra el uso de recursos y el consumo de potencia del módulo I2C diseñado. En este reporte se evidencia que las celdas secuenciales, que incluyen registros y flip-flops, ocupan el 63.8% del área total del diseño y representan el 80.8% del consumo de potencia interna, lo cual es consistente con una arquitectura basada en máquinas de estados finitas utilizada para controlar las distintas fases del protocolo I2C (como START, ADDRESS, READ, WRITE y STOP). Las celdas lógicas, aunque ocupan un 30.8% del área, contribuyen con solo el 7.2% del consumo interno, lo que indica que la lógica combinacional no es el principal factor de consumo energético dentro del sistema.
+
 ## Layout final
 ![image](https://github.com/user-attachments/assets/4bd2eebf-f75e-47ae-abee-d41ea3124ce9)
+
 La imagen presentada corresponde al diseño final en vista de celda colocada y ruteada (layout) del bloque digital del módulo I2C, obtenido tras seguir el flujo completo de síntesis. En este diseño, se puede observar la distribución física de las celdas estándar dentro del área del chip, donde cada componente lógico del módulo (como registros ) ha sido asignado a una ubicación específica, respetando las restricciones de área, potencia y temporización. Las líneas de interconexión en colores representan los diferentes niveles metálicos utilizados para enrutar las señales internas, lo cual garantiza la conectividad entre los elementos del circuito.
 
 
