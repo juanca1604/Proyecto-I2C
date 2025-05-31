@@ -23,10 +23,7 @@ El módulo desarrollado implementa un controlador I2C con soporte para operació
 ### Especificaciones pendientes 
 - Soporte para múltiples periféricos operando en simultáneo.
 - Mecanismo de gestión mediante interrupciones.
-- Funciones :
-  - Generación de condiciones Start/Stop.
-  - Transmisión de datos al periférico.
-  - Manejo de señales ACK/NACK.
+
 ## Configuración de pines
 | Alfiler     | Dirección   | Descripción           |
 | ----------- | ----------- |---------------------- |
