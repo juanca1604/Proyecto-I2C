@@ -49,6 +49,15 @@ Finalmente, el análisis del diagrama revela algunas oportunidades de mejora. Au
 # Proyecto de módulo de lectura I2C
 ## Objetivo
 El módulo desarrollado integra un controlador I2C completamente funcional, capaz de operar tanto en modo Maestro como en modo Periférico. Soporta direcciones de 7 bits y cuenta con funcionalidades esenciales como la gestión de señales ACK/NACK y la detección de condiciones de inicio (Start) y parada (Stop).
+## Configuración
+- Especificaciones del módulo
+- Frecuencia de operación: 100 kHz (configurable).
+- Modo de operación: Maestro/periferico.
+- Direcciones soportadas: 7 bits.
+### Función
+- Detección de condiciones Start/Stop.
+- Manejo de ACK/NACK.
+- Configuración del prescaler.
 ## Especificaciones 
 ### Especificaciones implementadas
 - Operación en modo Maestro y Periférico.
@@ -76,13 +85,22 @@ Durante la simulación, la señal i2c_data_out[7:0] envía el valor 0xA9 al peri
 
 En cuanto a la interacción con la memoria, las señales mem_addr[31:0] y mem_rdata[31:0] muestran intentos de lectura en distintas direcciones, pero el valor de mem_rdata se mantiene en 0x00000000, lo que indica que no se obtiene información válida. Esto podría deberse a una desincronización entre las señales mem_ready y mem_valid, que deben estar correctamente alineadas para garantizar la transferencia de datos. Aunque el sistema se inicializa correctamente mediante la señal rst y se configura para lectura (rw = 0), el flujo de datos no se completa exitosamente. Es necesario revisar la configuración del periférico, validar que la dirección sea reconocida, y garantizar que las señales de control —especialmente las relacionadas con memoria— cumplan con las especificaciones del protocolo I2C.
 
-## Máquina de estados
-
-
 ## Diagrama de bloques
+![Imagen de WhatsApp 2025-05-30 a las 21 40 21_1479bb6e](https://github.com/user-attachments/assets/cd0b40d6-b49f-4c6e-9504-1fadd5d04eed)
+![Imagen de WhatsApp 2025-05-30 a las 21 39 12_0752a794](https://github.com/user-attachments/assets/e728ef5d-5400-43a7-a7e8-0e4326e284be)
 
 El diagrama de bloques presentado muestra la arquitectura general del módulo I2C, destacando las secciones clave que hacen posible la implementación del protocolo de comunicación. En el centro del diseño se gestionan dos buses fundamentales: el bus de datos y el bus de direcciones. El primero, con señales como mem_wdata y mem_rdata, permite la transferencia de información hacia y desde los registros internos del módulo. El bus de direcciones (mem_addr), por su parte, se encarga de seleccionar los registros específicos sobre los cuales se realizarán operaciones de lectura o escritura, facilitando así la configuración del módulo por parte de un sistema externo.
 
 Dentro del núcleo del sistema se encuentran los registros internos encargados de controlar el funcionamiento del protocolo. El registro I2C_BITRATE configura la frecuencia del bus mediante divisores de reloj, permitiendo establecer velocidades estándar como los 100 kHz. Los registros I2C_DATA_OUT e I2C_DATA_IN almacenan los datos enviados al periférico y los recibidos durante una lectura, respectivamente. Además, el registro I2C_CTRL administra señales esenciales de control como el inicio y final de transmisión (START/STOP), así como la selección del tipo de operación (lectura o escritura).
 
 El diseño incluye también un controlador de reloj compuesto por un contador y un divisor, cuya función es transformar el reloj del sistema (CPU_CLOCK) en la señal de reloj del bus I2C (SCL), garantizando la sincronización de la comunicación. Este controlador trabaja junto con una máquina de estados secuencial que ejecuta la lógica del protocolo I2C, manejando condiciones de arranque y parada, generación de señales de habilitación (EN_I2C), control de la línea de datos (SDA), y respuesta a señales ACK/NACK. Finalmente, señales adicionales como mem_valid, mem_ready y mem_wstrb aseguran una correcta sincronización y control de las operaciones de lectura y escritura entre el módulo y el entorno externo.
+
+## Máquina de estados
+
+La máquina de estados finita del módulo maestro I2C inicia su operación en el estado **IDLE**, donde las líneas SDA y SCL permanecen en nivel alto, indicando que el bus está libre. Cuando se activa la señal **I2C\_START**, el sistema genera una condición de inicio llevando la línea SDA a nivel bajo mientras SCL permanece alta. Esta condición notifica a los dispositivos conectados que una nueva comunicación está por comenzar, y el sistema avanza al estado **ADDRESS**, donde el maestro transmite la dirección de 7 bits del periférico objetivo, seguida de un bit que indica si se desea realizar una lectura o escritura.
+
+Tras el envío de la dirección y el bit de control, el maestro ingresa al estado **ACK\_CHECK** para verificar si el periférico ha respondido con una señal de reconocimiento (ACK). Si se recibe el ACK, el maestro prosigue con la operación indicada: en caso de escritura (**R/W = 0**), entra al estado **WRITE** para enviar un byte de datos contenido en el registro `I2C_DATA_OUT` hacia el periférico. Al completar el envío, se genera una interrupción indicando que la transmisión fue exitosa, y el maestro puede continuar enviando más datos o finalizar la operación si el periférico responde con un NACK.
+
+Si la operación es de lectura (**R/W = 1**), el maestro pasa al estado **READ**, donde recibe un byte de datos desde el periférico, el cual se almacena en el registro `I2C_DATA_IN`. Al igual que en la escritura, se genera una interrupción tras la recepción del dato. Si no se reciben más datos o el periférico emite un NACK, el maestro avanza al estado **STOP**, donde genera una condición de parada cambiando la línea SDA de bajo a alto mientras SCL permanece en alto. Esto indica que la comunicación ha finalizado, y el sistema regresa al estado **IDLE**, quedando listo para una nueva transacción.
+
+
